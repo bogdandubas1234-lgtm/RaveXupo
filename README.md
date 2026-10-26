@@ -1,30 +1,52 @@
 # RaveXupo — Telegram controller for Rave on Android
 
-This is a starter project, not a verified ready-to-run hosted bot. It controls an already-running Android device/emulator through Appium and receives commands in Telegram.
+RaveXupo is an experimental Telegram controller for the **Rave Android app** using Appium. It is not yet a verified ready-to-run service: the actual Rave login, room links and chat selectors must be tested on your device/emulator.
 
-## Hosting limitation
-GitHub stores code but does not keep an Android emulator running 24/7. Hosting requires a machine/service with Android SDK, a booted emulator or connected Android device, and usually KVM/hardware acceleration. Generic GitHub Actions is not a reliable permanent host for this use case.
+## Free hosting: what is realistic?
 
-## Setup
-1. Provision an Android host with Java, Android SDK/platform-tools, a system image and a booted AVD. Confirm `adb devices` shows the emulator as `device`.
-2. Install Rave from a trusted official source and sign in interactively in the emulator.
-3. Enter `rave_bot/`, run `bash setup.sh`, then edit `.env` with `TELEGRAM_TOKEN` and `ALLOWED_USER_ID`.
-4. Start Appium on localhost: `appium --address 127.0.0.1 --port 4723`.
-5. Run `bash start.sh`.
-6. In Telegram, send `/screenshot` and `/dumpui`. Inspect the returned XML and set `RAVE_CHAT_INPUT_ID`, `RAVE_CHAT_SEND_ID`, and `RAVE_CHAT_MESSAGES_XPATH` to real selectors from your Rave version. Restart the bot.
+**GitHub Actions is not a 24/7 server.** It runs a temporary job and shuts it down when the job ends. It is useful for code checks and short tests, not for hosting a logged-in Android app permanently.
 
-The setup script does not install Android SDK, create an emulator, sign in to Rave, or discover chat selectors. Rave may not support a particular emulator, so the setup and room opening must be tested on the target host.
+For a genuinely free setup, the most practical route is to run the Android emulator and bot on your own Windows PC and leave the PC on. Your PC must have enough RAM/CPU for an emulator, virtualization enabled, and must not go to sleep. This has no hosting fee, but it is not cloud hosting.
+
+A free cloud VM is not a dependable solution for this exact project: the bot needs a persistent Android emulator with virtualization, and free cloud services may sleep, lack nested virtualization, or have unsuitable CPU/RAM. For example, Render's free web services sleep after 15 minutes without inbound traffic and are not suitable for this Appium/emulator workload.
+
+## Windows quick start
+
+1. Install **Node.js LTS** and **Android Studio** on the Windows PC.
+2. In Android Studio > SDK Manager, install Android SDK Platform-Tools and Android Emulator. In Device Manager, create and boot an Android virtual device. Prefer a Google Play image if available.
+3. Install Rave in the emulator from a trusted official source and sign in manually. Do not put your Rave password in this repository.
+4. Install Python 3.10+ and ensure Python, npm, adb and emulator are available in PATH.
+5. Open PowerShell in the repository and run:
+   ```powershell
+   Set-ExecutionPolicy -Scope Process Bypass
+   .\rave_bot\setup_windows.ps1
+   ```
+6. Copy `rave_bot\.env.example` to `rave_bot\.env`. Fill `TELEGRAM_TOKEN` and `ALLOWED_USER_ID` privately.
+7. Run ` .\rave_bot\start_windows.ps1 -AvdName "YOUR_AVD_NAME" ` (replace with the AVD name shown in Android Studio Device Manager).
+8. In Telegram, send `/screenshot` and `/dumpui`. The chat selectors are not known in advance; inspect the returned XML and set `RAVE_CHAT_INPUT_ID`, `RAVE_CHAT_SEND_ID`, and `RAVE_CHAT_MESSAGES_XPATH` in `.env`, then restart.
+
+### Keep the PC awake
+In Windows Settings > System > Power, set sleep to **Never while plugged in**. Keep the emulator, Appium and bot running. If the PC restarts or loses internet, you may need to start the script again.
 
 ## Commands
+
 - `/join <room-link>` — open a room link.
-- `/say <text>` — send text if selectors are configured.
+- `/say <text>` — send a message if chat selectors are configured.
 - `/leave` — stop monitoring.
 - `/status` — show state.
-- `/screenshot` — send device screenshot.
-- `/dumpui` — send Android UI XML.
+- `/screenshot` — send a device screenshot.
+- `/dumpui` — send Android UI XML to help configure selectors.
+
+## Important limitations
+
+- The scripts do not install or authenticate Rave automatically.
+- The configured Android package name and deep-link behaviour may differ from the current Rave version.
+- Chat reading and sending will not work until real selectors are configured and tested.
+- The syntax-check workflow only checks Python syntax; it does not prove Rave automation works.
 
 ## Security
-- Never commit `.env` or post your Telegram token.
+
+- Never commit `.env` or share your Telegram bot token.
 - Only the numeric Telegram user ID in `ALLOWED_USER_ID` can control the bot.
-- Keep Appium on localhost; do not expose port 4723 publicly.
+- Keep Appium on localhost; do not expose port 4723 to the public internet.
 - Do not store your Rave password in this project.
