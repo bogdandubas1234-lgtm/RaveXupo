@@ -4,6 +4,8 @@ RaveXupo is an experimental Telegram controller for the **Rave Android app** usi
 
 ## Free hosting: what is realistic?
 
+See [FREE_HOSTING.md](FREE_HOSTING.md) for a comparison of options.
+
 **GitHub Actions is not a 24/7 server.** It runs a temporary job and shuts it down when the job ends. It is useful for code checks and short tests, not for hosting a logged-in Android app permanently.
 
 For a genuinely free setup, the most practical route is to run the Android emulator and bot on your own Windows PC and leave the PC on. Your PC must have enough RAM/CPU for an emulator, virtualization enabled, and must not go to sleep. This has no hosting fee, but it is not cloud hosting.
