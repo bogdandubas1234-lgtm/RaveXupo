@@ -11,30 +11,30 @@ RaveXupo currently automates the **Rave Android app** through Appium. A working 
 
 A free Linux server is **not automatically an Android emulator host**. No cloud option has been verified end-to-end for this repository, so this guide does not promise free 24/7 operation.
 
-## Cloud option to investigate: Oracle Cloud Always Free
+## Cloud option to test Appium: SpawnDroid
 
-Oracle Cloud Infrastructure (OCI) is the most plausible free VM experiment because its Always Free resources can include small AMD VMs and an Ampere A1 ARM VM. Check the current official limits before creating anything:
+[SpawnDroid](https://spawndroid.io/) provides Android 12–16 sessions on ARM64 servers and a hosted Appium endpoint. Its current Free plan advertises one parallel runner without a time cap and without a credit card.
 
-- [Oracle Always Free resources](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm)
-- [Oracle Free Tier FAQ](https://www.oracle.com/cloud/free/faq/)
+This is a useful **compatibility experiment**, not a verified 24/7 host:
 
-Important limitations:
+- Each session runs on an isolated Android container and is destroyed when the session ends.
+- The service terms say sessions may be reaped when idle and uninterrupted availability is not guaranteed.
+- Rave must be installed and signed in inside the cloud session. A new session may not preserve that login or app state.
+- The current RaveXupo code expects its own Appium/device setup. It has not yet been adapted or tested against SpawnDroid's hosted endpoint.
+- Before changing the bot, verify that you can install and sign in to Rave in a session and that the session stays alive for the period you need.
 
-- OCI signup may require a valid payment card for verification; an authorization hold may appear.
-- VM capacity is not guaranteed. An "out of host capacity" error can mean you must wait or try another availability domain.
-- The Always Free Ampere A1 allowance is ARM-based. Android Emulator hardware acceleration and guest image compatibility are the key unknowns for this project. Do not assume that an ARM cloud VM can run the required Android emulator reliably.
-- The tiny AMD Always Free VM is not a realistic target for a full Android emulator + Appium + Rave workload.
-- Free-tier terms and quotas can change. Confirm that the instance is explicitly marked Always Free before creating it, and do not enable paid resources.
+Start here:
+- [SpawnDroid](https://spawndroid.io/)
+- [SpawnDroid help and Appium guides](https://spawndroid.io/help/)
+- [SpawnDroid terms](https://spawndroid.io/terms/)
 
 ### Phone-only preflight checklist
 
-You can do these steps from your phone browser; no computer is needed to create the cloud account:
-
-1. Open the official OCI Free Tier page and review the card-verification and regional availability requirements.
-2. Create one account only, using accurate details. Do not create duplicate accounts to get around capacity or eligibility limits.
-3. In the OCI Console, check the available Always Free compute shapes in your home region.
-4. **Stop before deploying RaveXupo** if the only available free instance cannot support a compatible Android emulator. Do not add payment details to upgrade or create paid resources just to test this.
-5. If you do obtain a suitable VM, first test Android Emulator, Appium, and a manually authenticated Rave installation separately. Only then configure this bot. This has not been tested for this repository.
+1. Open SpawnDroid in your phone browser and create a free workspace if eligible.
+2. Start a manual Android session and check whether Rave can be installed and opened.
+3. Sign in manually; never send your Rave password or session credentials to anyone.
+4. Check whether the session stays alive while idle and whether you can create a fresh session after it ends.
+5. Only after those checks should we adapt RaveXupo to the hosted Appium URL. Do not assume this provides 24/7 uptime.
 
 ## What will not provide a permanent host
 
