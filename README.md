@@ -6,7 +6,7 @@ RaveXupo is an experimental Telegram controller for the **Rave Android app** usi
 
 **Not with a currently verified, reliable setup.** RaveXupo needs a persistent Android device/emulator running Rave, plus Appium and the Python Telegram controller. A free Linux VM alone does not guarantee that a compatible Android emulator can run there.
 
-See [FREE_HOSTING.md](FREE_HOSTING.md) for a realistic comparison and a phone-only checklist for investigating Oracle Cloud Always Free. OCI is an experiment, not a guaranteed deployment: ARM VM compatibility, emulator acceleration, available capacity, and signup verification are potential blockers. Do not enable paid resources just to test.
+See [FREE_HOSTING.md](FREE_HOSTING.md) for realistic hosting limits and a phone-only SpawnDroid compatibility test. SpawnDroid offers hosted Android and Appium, but sessions are temporary/isolated and it is not verified as a permanent 24/7 host for RaveXupo.
 
 GitHub Actions is not a 24/7 server. It runs temporary jobs and shuts them down when each job ends. GitHub Codespaces also has limited free compute and is not a guaranteed always-on host. Termux can run Python on Android, but it cannot straightforwardly control the same phone's Rave UI through this project's current Appium setup without a compatible device/ADB or accessibility bridge.
 
