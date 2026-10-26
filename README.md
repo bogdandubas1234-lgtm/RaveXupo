@@ -2,15 +2,13 @@
 
 RaveXupo is an experimental Telegram controller for the **Rave Android app** using Appium. It is not yet a verified ready-to-run service: the actual Rave login, room links and chat selectors must be tested on your device/emulator.
 
-## Free hosting: what is realistic?
+## Can I host it from my phone for free, 24/7?
 
-See [FREE_HOSTING.md](FREE_HOSTING.md) for a comparison of options.
+**Not with a currently verified, reliable setup.** RaveXupo needs a persistent Android device/emulator running Rave, plus Appium and the Python Telegram controller. A free Linux VM alone does not guarantee that a compatible Android emulator can run there.
 
-**GitHub Actions is not a 24/7 server.** It runs a temporary job and shuts it down when the job ends. It is useful for code checks and short tests, not for hosting a logged-in Android app permanently.
+See [FREE_HOSTING.md](FREE_HOSTING.md) for a realistic comparison and a phone-only checklist for investigating Oracle Cloud Always Free. OCI is an experiment, not a guaranteed deployment: ARM VM compatibility, emulator acceleration, available capacity, and signup verification are potential blockers. Do not enable paid resources just to test.
 
-For a genuinely free setup, the most practical route is to run the Android emulator and bot on your own Windows PC and leave the PC on. Your PC must have enough RAM/CPU for an emulator, virtualization enabled, and must not go to sleep. This has no hosting fee, but it is not cloud hosting.
-
-A free cloud VM is not a dependable solution for this exact project: the bot needs a persistent Android emulator with virtualization, and free cloud services may sleep, lack nested virtualization, or have unsuitable CPU/RAM. For example, Render's free web services sleep after 15 minutes without inbound traffic and are not suitable for this Appium/emulator workload.
+GitHub Actions is not a 24/7 server. It runs temporary jobs and shuts them down when each job ends. GitHub Codespaces also has limited free compute and is not a guaranteed always-on host. Termux can run Python on Android, but it cannot straightforwardly control the same phone's Rave UI through this project's current Appium setup without a compatible device/ADB or accessibility bridge.
 
 ## Windows quick start
 
@@ -28,6 +26,7 @@ A free cloud VM is not a dependable solution for this exact project: the bot nee
 8. In Telegram, send `/screenshot` and `/dumpui`. The chat selectors are not known in advance; inspect the returned XML and set `RAVE_CHAT_INPUT_ID`, `RAVE_CHAT_SEND_ID`, and `RAVE_CHAT_MESSAGES_XPATH` in `.env`, then restart.
 
 ### Keep the PC awake
+
 In Windows Settings > System > Power, set sleep to **Never while plugged in**. Keep the emulator, Appium and bot running. If the PC restarts or loses internet, you may need to start the script again.
 
 ## Commands
